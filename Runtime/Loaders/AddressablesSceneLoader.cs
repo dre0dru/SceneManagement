@@ -7,10 +7,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityEngine.Scripting;
-#if VCONTAINER_SUPPORT
-using VContainer;
-using VContainer.Unity;
-#endif
 
 namespace Dre0Dru.SceneManagement
 {
@@ -55,18 +51,6 @@ namespace Dre0Dru.SceneManagement
                 SetSceneActive(sceneName);
             }
         }
-
-        #if VCONTAINER_SUPPORT
-        public async UniTask LoadSceneAsyncWithExtraBindings(string sceneName, LoadSceneMode loadSceneMode,
-            Action<IContainerBuilder> extraBindings,
-            IProgress<float> progress = null, bool makeActive = false)
-        {
-            using (LifetimeScope.Enqueue(extraBindings))
-            {
-                await LoadSceneAsync(sceneName, loadSceneMode, progress, makeActive);
-            }
-        }
-        #endif
 
         public UniTask UnloadSceneAsync(string sceneName, UnloadSceneOptions unloadSceneOptions =
  UnloadSceneOptions.None,

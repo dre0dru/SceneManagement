@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using UnityEngine.Scripting;
-#if VCONTAINER_SUPPORT
-using VContainer;
-using VContainer.Unity;
-#endif
 
 namespace Dre0Dru.SceneManagement
 {
@@ -53,21 +49,9 @@ namespace Dre0Dru.SceneManagement
             }
         }
 
-        #if VCONTAINER_SUPPORT
-        public async UniTask LoadSceneAsyncWithExtraBindings(string sceneName, LoadSceneMode loadSceneMode,
-            Action<IContainerBuilder> extraBindings,
-            IProgress<float> progress = null, bool makeActive = false)
-        {
-            using (LifetimeScope.Enqueue(extraBindings))
-            {
-                await LoadSceneAsync(sceneName, loadSceneMode, progress, makeActive);
-            }
-        }
-        #endif
-
         public UniTask UnloadSceneAsync(string sceneName, UnloadSceneOptions unloadSceneOptions = UnloadSceneOptions.None, IProgress<float> progress = null)
         {
-            return SceneManager.UnloadSceneAsync(sceneName, UnloadSceneOptions.None).ToUniTask(progress);
+            return SceneManager.UnloadSceneAsync(sceneName, unloadSceneOptions).ToUniTask(progress);
         }
     }
 }
